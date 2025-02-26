@@ -12,7 +12,7 @@ public class Movie {
 
 	@Id
 	private String id;
-	
+
 	@Field("movie_title")
 	private String movieTitle;
 

@@ -16,9 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.xyz.cinema.booking.model.Movie;
 import com.xyz.cinema.booking.service.MovieService;
 
-import lombok.extern.slf4j.Slf4j;
-
-@Slf4j
 @RestController
 @RequestMapping
 public class MovieController {
@@ -58,24 +55,23 @@ public class MovieController {
 		return movieService.deleteMovie(movieId);
 
 	}
-	
+
 	// get movie by id
-	
+
 	@GetMapping("/movie/{id}")
 	public Movie getEmployeeById(@PathVariable String id) {
-		
+
 		return movieService.getMovieById(id);
 
 	}
-	
+
 	@GetMapping("/movie")
-    public List<Movie> getMoviesByParams(
-    		@RequestParam(value = "movieTitle", required = false) String movieTitle,
-            @RequestParam(value = "genre", required = false) String genre,
-            @RequestParam(value = "date", required = false) String date,
-            @RequestParam(value = "location", required = false) String location) {
-        
-        // Call the service to get movies based on parameters
-        return movieService.getMovieByParams(movieTitle, genre, date, location);
-    }
+	public List<Movie> getMoviesByParams(@RequestParam(value = "movieTitle", required = false) String movieTitle,
+			@RequestParam(value = "genre", required = false) String genre,
+			@RequestParam(value = "date", required = false) String date,
+			@RequestParam(value = "location", required = false) String location) {
+
+		// Call the service to get movies based on parameters
+		return movieService.getMovieByParams(movieTitle, genre, date, location);
+	}
 }

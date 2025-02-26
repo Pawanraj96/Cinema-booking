@@ -12,6 +12,7 @@ import com.xyz.cinema.booking.exception.ResourceNotFoundException;
 import com.xyz.cinema.booking.model.Movie;
 import com.xyz.cinema.booking.repository.MovieRepository;
 import com.xyz.cinema.booking.service.MovieService;
+
 @Service
 public class MovieServiceImpl implements MovieService {
 
@@ -21,19 +22,20 @@ public class MovieServiceImpl implements MovieService {
 		super();
 		this.movieRepository = movieRepository;
 	}
-	
+
 	@Override
-    public ResponseEntity<?> saveMovie(Movie movie) {
-		
-        Optional<Movie> existingMovie = movieRepository.findByMovieTitle(movie.getMovieTitle());
+	public ResponseEntity<?> saveMovie(Movie movie) {
 
-        if (existingMovie.isPresent()) {
-            return new ResponseEntity<>("Movie with title '" + movie.getMovieTitle() + "' already exists!", HttpStatus.CONFLICT);
-        }
+		Optional<Movie> existingMovie = movieRepository.findByMovieTitle(movie.getMovieTitle());
 
-        movieRepository.save(movie);
-        return new ResponseEntity<>("Movie saved successfully!", HttpStatus.CREATED);
-    }
+		if (existingMovie.isPresent()) {
+			return new ResponseEntity<>("Movie with title '" + movie.getMovieTitle() + "' already exists!",
+					HttpStatus.CONFLICT);
+		}
+
+		movieRepository.save(movie);
+		return new ResponseEntity<>("Movie saved successfully!", HttpStatus.CREATED);
+	}
 
 	@Override
 	public List<Movie> getAllMoviesNames() {
@@ -43,7 +45,7 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public ResponseEntity<?> updateMovie(Movie movie, String id) {
-		
+
 		// we need to check whether the movie with given id is exist in DB or not
 		Movie existingMovie = movieRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Movie", "Id", id));
@@ -58,7 +60,7 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public ResponseEntity<?> deleteMovie(String id) {
-		//check whether a movie exist in DB or not
+		// check whether a movie exist in DB or not
 		movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "Id", id));
 		movieRepository.deleteById(id);
 		return new ResponseEntity<>("Movie deleted successfully!", HttpStatus.OK);
@@ -66,24 +68,23 @@ public class MovieServiceImpl implements MovieService {
 
 	@Override
 	public Movie getMovieById(String id) {
-		
+
 		return movieRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Movie", "Id", id));
-		
+
 	}
 
 	@Override
 	public List<Movie> getMovieByParams(String movieTitle, String genre, String date, String location) {
-		
+
 		List<Movie> allMovies = movieRepository.findAll(); // Fetch all movies from the data source
 
-	    // Filter based on the parameters provided
-	    return allMovies.stream()
-	            .filter(movie -> (movieTitle == null || movie.getMovieTitle().equalsIgnoreCase(movieTitle)) && 
-	                             (genre == null || movie.getGenre().equalsIgnoreCase(genre)) &&
-	                             (date == null || movie.getDate().equals(date)) &&
-	                             (location == null || movie.getLocation().equalsIgnoreCase(location)))
-	            .collect(Collectors.toList());
+		// Filter based on the parameters provided
+		return allMovies.stream()
+				.filter(movie -> (movieTitle == null || movie.getMovieTitle().equalsIgnoreCase(movieTitle))
+						&& (genre == null || movie.getGenre().equalsIgnoreCase(genre))
+						&& (date == null || movie.getDate().equals(date))
+						&& (location == null || movie.getLocation().equalsIgnoreCase(location)))
+				.collect(Collectors.toList());
 	}
-	
 
 }
