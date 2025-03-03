@@ -2,7 +2,6 @@ package com.xyz.cinema.booking.service.impl;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,17 +73,20 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public List<Movie> getMovieByParams(String movieTitle, String genre, String date, String location) {
-
-		List<Movie> allMovies = movieRepository.findAll(); // Fetch all movies from the data source
-
-		// Filter based on the parameters provided
-		return allMovies.stream()
-				.filter(movie -> (movieTitle == null || movie.getMovieTitle().equalsIgnoreCase(movieTitle))
-						&& (genre == null || movie.getGenre().equalsIgnoreCase(genre))
-						&& (date == null || movie.getDate().equals(date))
-						&& (location == null || movie.getLocation().equalsIgnoreCase(location)))
-				.collect(Collectors.toList());
-	}
+	 public List<Movie> getMoviesByGenre(String genre) {
+	        return movieRepository.findByGenre(genre);
+	    }
+	@Override
+	    public List<Movie> getMoviesByDate(String date) {
+	        return movieRepository.findByDate(date);
+	    }
+	@Override
+	    public List<Movie> getMoviesByTitle(String movieTitle) {
+	        return movieRepository.findByMovieTitleContainingIgnoreCase(movieTitle);
+	    }
+	@Override
+	    public List<Movie> getMoviesByLocation(String location) {
+	        return movieRepository.findByLocationContainingIgnoreCase(location);
+	    }
 
 }

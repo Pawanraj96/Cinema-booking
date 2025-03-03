@@ -66,12 +66,22 @@ public class MovieController {
 	}
 
 	@GetMapping("/movie")
-	public List<Movie> getMoviesByParams(@RequestParam(value = "movieTitle", required = false) String movieTitle,
-			@RequestParam(value = "genre", required = false) String genre,
-			@RequestParam(value = "date", required = false) String date,
-			@RequestParam(value = "location", required = false) String location) {
-
-		// Call the service to get movies based on parameters
-		return movieService.getMovieByParams(movieTitle, genre, date, location);
-	}
+    public List<Movie> getMovies(
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String date,
+            @RequestParam(required = false) String movieTitle,
+            @RequestParam(required = false) String location) {
+        
+        if (genre != null) {
+            return movieService.getMoviesByGenre(genre);
+        } else if (date != null) {
+            return movieService.getMoviesByDate(date);
+        } else if (movieTitle != null) {
+        	return movieService.getMoviesByTitle(movieTitle);
+        } else if (location != null) {
+            return movieService.getMoviesByLocation(location);
+        } else {
+            return List.of();  // Return empty list if no filter is provided
+        }
+    }
 }

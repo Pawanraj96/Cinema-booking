@@ -18,5 +18,8 @@ public interface MovieService {
 
 	Movie getMovieById(String id);
 
-	List<Movie> getMovieByParams(String movieTitle, String genre, String date, String location);
+	 List<Movie> getMoviesByGenre(String genre);
+	    List<Movie> getMoviesByDate(String date);
+	    List<Movie> getMoviesByTitle(String movieTitle);
+	    List<Movie> getMoviesByLocation(String location);
 }

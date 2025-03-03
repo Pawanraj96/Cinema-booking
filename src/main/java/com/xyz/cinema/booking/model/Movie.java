@@ -1,12 +1,18 @@
 package com.xyz.cinema.booking.model;
 
+import java.util.List;
+
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "movie")
 public class Movie {
 
@@ -24,4 +30,8 @@ public class Movie {
 
 	@Field("location")
 	private String location;
+
+	@Field("shows")
+	private List<ShowModel> shows;
+	
 }
